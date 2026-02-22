@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Brain: Roads vs. Traffic</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="heatmap.js" type="module"></script>
+    <script src="dendrogram.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">BrainMap Analysis</div>
+            <div class="nav-links">
+                <a href="#intro">The Analogy</a>
+                <a href="#methods">Methods</a>
+                <a href="#results">Results</a>
+                <a href="#conclusion">Impact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="hero-title">The Brain:<br>Roads vs. Traffic</h1>
+        <p class="hero-subtitle">
+            Do the physical structures of the brain strictly dictate its functional activity? <br>
+            Or do they operate as partially independent systems?
+        </p>
+        <a href="#intro" class="btn">Explore the Analysis</a>
+    </header>
+
+    <section id="intro">
+        <div class="section-header">
+            <span class="section-tag">The Concept</span>
+            <h2>City Analogy</h2>
+            <p>To characterize large-scale principles of cortical organization, we can think of the human brain as a complex, bustling city.</p>
+        </div>
+
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="icon">🛣️</span>
+                <h3 style="color: var(--structure-color)">The Roads (Structure)</h3>
+                <p>
+                    <strong>PC1 Gene Expression, Myelin Ratio, Cortical Thickness, Allometric Scaling.</strong><br>
+                    Just like a city has physical infrastructure, the brain has "roads." 
+                    These layers represent the physical anatomy, morphological cables, and structural hierarchies that permit signals to travel.
+                </p>
+            </div>
+
+            <div class="analogy-card">
+                <span class="icon">🚦</span>
+                <h3 style="color: var(--chemical-color)">The Traffic (Function)</h3>
+                <p>
+                    <strong>5-HT1a Receptors, Glucose Metabolism, Functional Gradient, Intersubject Variability.</strong><br>
+                    A road can be open, but cars cannot move until the light turns green. This "traffic" represents neurochemical and functional signaling—the dynamic flow of information controlled by metabolic states and neurotransmitter distributions.
+                </p>
+            </div>
+        </div>
+        <p>
+            Current neuroscience often studies these physical and functional components in isolation. Our project bridges this gap by transforming diverse volumetric and surface brain maps onto a unified cortical grid (fsLR 32k), creating a robust framework to test whether the brain functions as highly integrated multimodal units, or partially segregated structural and chemical systems.
+        </p>
+    </section>
+
+    <section id="methods">
+        <div class="section-header">
+            <span class="section-tag">Methodology</span>
+            <h2>Analytical Pipeline</h2>
+        </div>
+        
+        <p>
+            Comparing brain images directly often yields false connections. This is due to <strong>Spatial Autocorrelation</strong>—the phenomenon where neighboring brain regions are inherently more similar to each other than distant regions, violating standard statistical independence assumptions and inflating false positives.
+        </p>
+
+        <div class="methods-container">
+            <div class="spin-animation-container">
+                <div class="brain-sphere">🧠</div>
+            </div>
+            <div class="methods-text">
+                <h3>The Spatial Spin Test</h3>
+                <p>
+                    To combat this, we utilize the <strong>Alexander-Bloch Spin Test</strong>. Instead of destroying the data's inherent spatial structure by randomly shuffling vertices, we project the maps onto a sphere and rotate them relative to one another.
+                </p>
+                <p>
+                    This preserves the intrinsic spatial topology of the original data while randomizing the alignment between the two maps. When combined with Max-T permutation correction, this guarantees that observed correlations represent true biological coupling rather than random geometric coincidence.
+                </p>
+            </div>
+        </div>
+
+        <div class="methods-container">
+            <div class="methods-text">
+                <h3>Pairwise Density Scatter & Ranking</h3>
+                <p>
+                    Given the high dimensionality of our data (~32,000 vertices per map), standard scatter plots become unreadable. We implemented hexbin density scatter plots to visualize the concentration of data points across map pairs. 
+                </p>
+                <p>
+                    Because interactions in the brain are rarely perfectly linear, we applied rank transformations to the data. This linearization of monotonic relationships allowed us to evaluate spatial associations rigorously using the Spearman rank correlation coefficient ($\rho$).
+                </p>
+            </div>
+        </div>
+
+        <div class="methods-container">
+            <div class="methods-text">
+                <h3>Principal Component Analysis (PCA)</h3>
+                <p>
+                    To compress this complex network into digestible organizational axes, we performed PCA via eigendecomposition on our symmetric 8x8 Spearman correlation matrix. This isolates the dominant, orthogonal axes (principal components) that explain the maximum shared spatial variance across all structural and functional modalities.
+                </p>
+            </div>
+        </div>
+
+        <div class="methods-container">
+            <div class="methods-text">
+                <h3>Subgroup Clustering</h3>
+                <p>
+                    Finally, we applied agglomerative hierarchical clustering (using average linkage on correlation-derived distances) to systematically test our "Segregation Hypothesis." We cut the resulting dendrogram into two distinct clusters to measure whether maps couple more strongly *within* their biological domains (e.g., structure-to-structure) than *between* them.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="results">
+        <div class="section-header">
+            <span class="section-tag">Our Findings</span>
+            <h2>Mapping the Covariance Structure</h2>
+        </div>
+
+        <div class="result-block">
+            <h3>1. The Multimodal Correlation Matrix</h3>
+            <p>
+                Below is the comprehensive correlation matrix for our 8 neuroimaging maps. Values range from -1 (Dark Blue, strong negative coupling) to +1 (Dark Red, strong positive coupling). 
+                <em>Hover over any cell to investigate the precise Spearman <strong>&rho;</strong> correlation between that specific brain map pair.</em>
+            </p>
+            
+            <div class="figure-placeholder">
+                <div class="matrix-wrapper">
+                    <div id="tooltip"></div>
+                    <div class="matrix-container" id="correlationMatrix">
+                        </div>
+                </div>
+            </div>
+            <p class="figure-caption">Figure 1: Interactive 8x8 Spearman Correlation Matrix. Darker colors indicate stronger biological signals that survived Max-T correction thresholds.</p>
+        </div>
+
+        <div class="result-block">
+            <h3>2. Localized Spatial Coupling</h3>
+            <p>
+                Our pairwise density scatter plots revealed that structural and chemical modalities are not uniformly linked across the brain. They frequently exhibit complex "hockey stick" or sigmoidal curves. When plotting local coupling scores onto the cortical surface, we observe that structural and functional layers are tightly coupled in primary sensory and motor regions, but highly uncoupled (divergent) in the association cortex.
+            </p>
+        </div>
+
+        <div class="result-block">
+            <h3>3. Dominant Axes of Organization (PCA)</h3>
+            <p>
+                Our PCA revealed a highly compressed low-dimensional structure. <strong>PC1</strong> explains 50.10% of the variance and acts as a global "coupling axis" capturing shared variation across all maps. <strong>PC2</strong> explains 18.08% of the variance and functions strictly as a "segregation axis"—pulling structural maps (like cortical thickness) to one side, and functional/chemical maps (like 5-HT1a) to the other. Together, just two dimensions explain ~70% of the brain's macroscopic covariance.
+            </p>
+        </div>
+            
+        <div class="result-block">
+            <h3>4. Subgroup Connectivity Analysis</h3>
+            <p>
+                Hierarchical clustering perfectly partitioned the maps into two biological families: an "Inward-oriented" Structural cluster and an "Outward-oriented" Functional cluster. The mean correlation strength <em>within</em> these groups (<strong><span style="text-decoration: overline;">r</span> &approx; 0.497</strong> and <strong>0.378</strong>) was significantly higher than the correlation <em>between</em> the groups (<strong><span style="text-decoration: overline;">r</span> = -0.370</strong>), providing stark quantitative evidence for structural-functional decoupling.
+        </p>
+
+    <div class="figure-placeholder" style="flex-direction: column; width: 100%; max-width: 800px;">
+        <div id="dendrogram-container" style="width: 100%; height: 450px;"></div>
+    </div>
+    <p class="figure-caption">Figure 4: Interactive Hierarchical Dendrogram. Hover over nodes and leaves to view cluster assignments and biological coupling notes.</p>
+        </div>
+    </section>
+
+    <section id="conclusion" class="impact-section">
+        <div class="section-header">
+            <span class="section-tag">The Impact</span>
+            <h2>The Untethered Mind</h2>
+        </div>
+        <p>
+            Our analysis answers our primary hypothesis: <strong>The roads do not strictly dictate the traffic.</strong>
+        </p>
+        <p>
+            We identified strong empirical evidence supporting the <em>Tethering Hypothesis</em>. While sensory regions of the brain are evolutionarily "tethered" (where structure strictly guides function), the higher-order association cortices are untethered. This decoupling allows for abstract reasoning, complex decision-making, and advanced social cognition without being rigidly constrained by local anatomy.
+        </p>
+        <p>
+            <strong>Why does this matter?</strong><br>
+            By establishing this normative baseline using rigorous spatial null testing, we have created a statistical framework that can be applied to clinical neuroscience. Understanding this baseline allows researchers to pinpoint exactly how and where structural-functional coupling breaks down in neurodegenerative diseases like Alzheimer's or psychiatric disorders like Schizophrenia.
+        </p>
+    </section>
+
+    <footer>
+        <p><strong>DSC 180 Capstone Project</strong> | UC San Diego</p>
+        <p class="footer-links">
+            <a href="https://github.com/kesouder/BrainMap_Analysis" target="_blank">GitHub Repository</a>
+            <a href="https://kesouder.github.io/BrainMap_Analysis/" target="_blank">Full Report Site</a>
+        </p>
+        <p class="footer-authors">
+            Kevin Souder • Kevin Huang
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
