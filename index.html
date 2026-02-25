@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="heatmap.js" type="module"></script>
     <script src="dendrogram.js" type="module"></script>
+    <script src="pca.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -96,7 +97,7 @@
                     Given the high dimensionality of our data (~32,000 vertices per map), standard scatter plots become unreadable. We implemented hexbin density scatter plots to visualize the concentration of data points across map pairs. 
                 </p>
                 <p>
-                    Because interactions in the brain are rarely perfectly linear, we applied rank transformations to the data. This linearization of monotonic relationships allowed us to evaluate spatial associations rigorously using the Spearman rank correlation coefficient ($\rho$).
+                    Because interactions in the brain are rarely perfectly linear, we applied rank transformations to the data. This linearization of monotonic relationships allowed us to evaluate spatial associations rigorously using the Spearman rank correlation coefficient (&rho;).
                 </p>
             </div>
         </div>
@@ -155,8 +156,20 @@
             <p>
                 Our PCA revealed a highly compressed low-dimensional structure. <strong>PC1</strong> explains 50.10% of the variance and acts as a global "coupling axis" capturing shared variation across all maps. <strong>PC2</strong> explains 18.08% of the variance and functions strictly as a "segregation axis"—pulling structural maps (like cortical thickness) to one side, and functional/chemical maps (like 5-HT1a) to the other. Together, just two dimensions explain ~70% of the brain's macroscopic covariance.
             </p>
-        </div>
             
+            <div class="figure-placeholder" style="flex-direction: column; width: 100%; max-width: 800px; padding: 2rem;">
+                
+                <div class="pca-toggle-bar">
+                    <button class="pca-toggle-btn active" data-target="pca-heatmap-container">Loadings Heatmap</button>
+                    <button class="pca-toggle-btn" data-target="pca-scree-container">Variance Scree Plot</button>
+                </div>
+
+                <div id="pca-heatmap-container" style="width: 100%; height: 500px; display: block;"></div>
+                <div id="pca-scree-container" style="width: 100%; height: 500px; display: none;"></div>
+                
+            </div>
+            <p class="figure-caption">Figure 3: Interactive PCA visualizations. Use the toggle bar to switch between the Loadings Heatmap and Variance Scree Plot.</p>
+        </div>
         <div class="result-block">
             <h3>4. Subgroup Connectivity Analysis</h3>
             <p>
