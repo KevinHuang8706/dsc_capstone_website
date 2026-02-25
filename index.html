@@ -8,6 +8,7 @@
     <script src="heatmap.js" type="module"></script>
     <script src="dendrogram.js" type="module"></script>
     <script src="pca.js" type="module"></script>
+    <script src="pca_scatter.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -174,14 +175,47 @@
             <h3>4. Subgroup Connectivity Analysis</h3>
             <p>
                 Hierarchical clustering perfectly partitioned the maps into two biological families: an "Inward-oriented" Structural cluster and an "Outward-oriented" Functional cluster. The mean correlation strength <em>within</em> these groups (<strong><span style="text-decoration: overline;">r</span> &approx; 0.497</strong> and <strong>0.378</strong>) was significantly higher than the correlation <em>between</em> the groups (<strong><span style="text-decoration: overline;">r</span> = -0.370</strong>), providing stark quantitative evidence for structural-functional decoupling.
-        </p>
+            </p>
 
-    <div class="figure-placeholder" style="flex-direction: column; width: 100%; max-width: 800px;">
-        <div id="dendrogram-container" style="width: 100%; height: 450px;"></div>
-    </div>
-    <p class="figure-caption">Figure 4: Interactive Hierarchical Dendrogram. Hover over nodes and leaves to view cluster assignments and biological coupling notes.</p>
+            <div class="figure-placeholder" style="flex-direction: column; width: 100%; max-width: 800px;">
+            <div id="dendrogram-container" style="width: 100%; height: 450px;"></div>
+            </div>
+                <p class="figure-caption">Figure 4: Interactive Hierarchical Dendrogram. Hover over nodes and leaves to view cluster assignments and biological coupling notes.</p>
+            </div>
+        </div>
+        <div class="result-block">
+            <h3>5. PCA Vector Alignment</h3>
+            <p>
+                The scatter plot below visualizes the exact PC1 and PC2 loadings for each brain map. 
+                <strong>Select any two points</strong> to trace their vectors from the origin and automatically calculate the angle between them. 
+                This angle's cosine serves as a low-dimensional approximation of their true spatial correlation.
+            </p>
+            
+            <div class="figure-placeholder" style="flex-direction: column; width: 100%; max-width: 800px; padding: 2rem;">
+                
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 1rem;">
+                    <h4 style="margin: 0; color: #1e293b;">PC1 vs PC2 Loadings</h4>
+                    <div>
+                        <button id="reset-scatter-btn" style="background: #e2e8f0; border: none; color: #94a3b8; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: not-allowed; font-weight: bold; margin-right: 10px; transition: all 0.2s;">
+                        Clear Selection
+                        </button>
+                        <button id="cluster-toggle-btn" style="background: white; border: 2px solid #cbd5e1; color: #475569; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: all 0.2s;">
+                            Turn Clusters On
+                        </button>
+                    </div>
+                </div>
+
+                <div id="pca-scatter-container" style="width: 100%; height: 500px;"></div>
+                
+                <div id="scatter-info-box" style="margin-top: 1rem; padding: 1.5rem; background: #f1f5f9; border-radius: 0.75rem; width: 100%; box-sizing: border-box; text-align: center; color: #475569; min-height: 100px;">
+                    <em>Click on any two points in the plot above to compare their vectors.</em>
+                </div>
+
+            </div>
+            <p class="figure-caption">Figure 5: Interactive Vector Analysis. Points colored by subgroup clustering assignments.</p>
         </div>
     </section>
+
 
     <section id="conclusion" class="impact-section">
         <div class="section-header">
