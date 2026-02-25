@@ -40,10 +40,10 @@ const tooltip = document.getElementById('tooltip');
 function getColor(value) {
     const intensity = Math.abs(value);
     if (value > 0) {
-        // Positive (+1) -> Red (var(--chemical-color) equivalent)
+        // Positive (+1) -> Red
         return `rgba(239, 68, 68, ${intensity})`;
     } else if (value < 0) {
-        // Negative (-1) -> Blue (var(--structure-color) equivalent)
+        // Negative (-1) -> Blue 
         return `rgba(37, 99, 235, ${intensity})`;
     }
     return `rgba(255, 255, 255, 1)`; // Zero -> White
@@ -63,13 +63,11 @@ maps.forEach((map, colIndex) => {
 
 // 3. Create Rows (Left Label + Data Cells)
 corrData.forEach((row, rowIndex) => {
-    // Row Label
     const rowLabel = document.createElement('div');
     rowLabel.className = `matrix-label left-label row-label-${rowIndex}`;
     rowLabel.innerText = maps[rowIndex];
     container.appendChild(rowLabel);
 
-    // Data Cells
     row.forEach((value, colIndex) => {
         const cell = document.createElement('div');
         cell.className = 'matrix-cell data-cell';
@@ -87,15 +85,12 @@ corrData.forEach((row, rowIndex) => {
 
         // Hover interactions
         cell.addEventListener('mouseenter', (e) => {
-            // Highlight Labels
             document.querySelector(`.row-label-${rowIndex}`).classList.add('label-highlight');
             document.querySelector(`.col-label-${colIndex}`).classList.add('label-highlight');
 
-            // Fetch formatting logic for tooltip
             const pVal = pData[rowIndex][colIndex];
             let pStr = pVal === 0 ? "N/A (Self)" : (pVal < 0.001 ? "< 0.001" : pVal.toFixed(4));
 
-            // Show Tooltip with Correlation & P-value on the same line
             tooltip.innerHTML = `
                 <strong>${maps[rowIndex]}</strong> vs <strong>${maps[colIndex]}</strong><br>
                 Correlation (ρ): ${value.toFixed(3)}, p-value: ${pStr}
@@ -104,18 +99,24 @@ corrData.forEach((row, rowIndex) => {
         });
 
         cell.addEventListener('mousemove', (e) => {
-            // Position Tooltip dynamically
-            const rect = container.getBoundingClientRect();
-            tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
-            tooltip.style.top = (e.clientY - rect.top + 15) + 'px';
+            // Get tooltip width (fallback to 250 if not rendered yet)
+            const tooltipWidth = tooltip.offsetWidth || 250; 
+            
+            // Since it's fixed, we just use the raw mouse coordinates!
+            let leftPos = e.clientX + 15;
+            
+            // BOUNDARY CHECK: If tooltip goes off the right edge of the browser, flip it left
+            if (leftPos + tooltipWidth + 20 > window.innerWidth) {
+                leftPos = e.clientX - tooltipWidth - 15;
+            }
+
+            tooltip.style.left = leftPos + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
         });
 
         cell.addEventListener('mouseleave', () => {
-            // Remove Highlight
             document.querySelector(`.row-label-${rowIndex}`).classList.remove('label-highlight');
             document.querySelector(`.col-label-${colIndex}`).classList.remove('label-highlight');
-            
-            // Hide Tooltip
             tooltip.style.opacity = 0;
         });
 

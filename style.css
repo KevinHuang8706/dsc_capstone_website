@@ -231,12 +231,37 @@ section {
 
 .matrix-container {
     display: grid;
-    grid-template-columns: 180px repeat(8, 65px); /* Increased from 150px and 50px */
-    grid-template-rows: 180px repeat(8, 65px);    /* Increased from 150px and 50px */
+    /* Reduced top row from 180px to 110px to eliminate white space */
+    grid-template-columns: 160px repeat(8, 55px); 
+    grid-template-rows: 110px repeat(8, 55px);    
     gap: 3px;
-    font-size: 13px;                              /* Slightly larger font */
+    font-size: 12px;                              
 }
 
+.matrix-label.top-label {
+    transform: rotate(-45deg);
+    transform-origin: bottom left;
+    white-space: nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-left: 27px; /* Re-centered for the new 55px columns */
+    padding-bottom: 5px;
+}
+
+/* Tooltip */
+#tooltip {
+    position: fixed; /* <-- THIS FIXES THE SCROLLING BUG */
+    background: rgba(15, 23, 42, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s; /* Faster transition so it feels snappy */
+    z-index: 9999; /* Ensures it is always on top of everything */
+    white-space: nowrap;
+}
 .matrix-cell {
     display: flex;
     align-items: center;
@@ -264,17 +289,6 @@ section {
     transition: color 0.2s;
 }
 
-.matrix-label.top-label {
-    /* Remove writing-mode: vertical-rl; */
-    transform: rotate(-45deg);
-    transform-origin: bottom left;
-    white-space: nowrap;
-    justify-content: flex-start;
-    align-items: flex-end;
-    margin-left: 25px; /* Shifts the label right to center it over the 50px column */
-    padding-bottom: 10px;
-}
-
 .matrix-label.left-label {
     justify-content: flex-end;
     text-align: right;
@@ -286,20 +300,6 @@ section {
     font-weight: 900;
 }
 
-/* Tooltip */
-#tooltip {
-    position: absolute;
-    background: rgba(15, 23, 42, 0.9);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-    z-index: 100;
-    white-space: nowrap;
-}
 
 .impact-section {
     background: white; 
