@@ -75,17 +75,26 @@
         <p>
             Comparing brain images directly often yields false connections. This is due to <strong>Spatial Autocorrelation</strong>—the phenomenon where neighboring brain regions are inherently more similar to each other than distant regions, violating standard statistical independence assumptions and inflating false positives.
         </p>
-
-        <div class="methods-container">
+        <div class="methods-container spin-test-card">
+            
             <div class="spin-animation-container">
-                <div class="brain-sphere">🧠</div>
+                <div class="brain-iframe-wrapper">
+                    <h4 class="brain-title" style="color: var(--structure-color);">Structural Mode (Roads)</h4>
+                    <iframe src="brain_structural.html" title="Structural Brain" scrolling="no"></iframe>
+                </div>
+                
+                <div class="brain-iframe-wrapper">
+                    <h4 class="brain-title" style="color: var(--chemical-color);">Functional Mode (Traffic)</h4>
+                    <iframe src="brain_functional.html" title="Functional Brain" scrolling="no"></iframe>
+                </div>
             </div>
-            <div class="methods-text">
+            
+            <div class="methods-text-centered">
                 <h3>The Spatial Spin Test</h3>
                 <p>
-                    To combat this, we utilize the <strong>Alexander-Bloch Spin Test</strong>. Instead of destroying the data's inherent spatial structure by randomly shuffling vertices, we project the maps onto a sphere and rotate them relative to one another.
+                    To combat spatial autocorrelation, we utilize the <strong>Alexander-Bloch Spin Test</strong>. Instead of destroying the data's inherent spatial structure by randomly shuffling vertices, we project the maps onto a sphere and rotate them relative to one another.
                 </p>
-                <p>
+                <p style="margin-bottom: 0;">
                     This preserves the intrinsic spatial topology of the original data while randomizing the alignment between the two maps. When combined with Max-T permutation correction, this guarantees that observed correlations represent true biological coupling rather than random geometric coincidence.
                 </p>
             </div>
