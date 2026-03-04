@@ -148,10 +148,11 @@ function renderScatter() {
         });
 
         // Overlay Box with stats
+// Enlarged Graphic Overlay (Bottom Left)
         graphicElements = [{
             type: 'group',
-            left: '12%', 
-            bottom: '18%',
+            left: '18%',   // <-- Adjusted to fit the new square grid
+            bottom: '18%', // <-- Adjusted to fit the new square grid
             children: [
                 {
                     type: 'rect',
@@ -173,10 +174,12 @@ function renderScatter() {
                 }
             ]
         }];
-    }
+    } // <-- End of the if(selectedPoints.length === 2) block
 
     const option = {
-        grid: { top: '5%', bottom: '15%', left: '10%', right: '15%', containLabel: true },
+        // FIX: Symmetrical margins inside a square container guarantees a perfect 1:1 ratio
+        grid: { top: '10%', bottom: '10%', left: '10%', right: '10%' }, 
+        
         tooltip: {
             formatter: function(params) {
                 if(params.seriesType === 'scatter') {
@@ -199,7 +202,7 @@ function renderScatter() {
         graphic: graphicElements, 
         series: seriesData
     };
-    pcaScatterChart.setOption(option, true); 
+    pcaScatterChart.setOption(option, true);
 }
 
 // Initial Render
