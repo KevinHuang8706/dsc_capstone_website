@@ -146,6 +146,8 @@ section {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     border: 1px solid #e2e8f0;
     transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
 .analogy-card:hover {
@@ -156,6 +158,25 @@ section {
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
+}
+
+/* 3D Brain Viewer within the Analogy Cards */
+.card-brain-viewer {
+    width: 100%;
+    height: 300px;
+    margin-top: auto; /* Pushes the viewer to the bottom of the card */
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+.card-brain-viewer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    pointer-events: auto;
 }
 
 /* --- METHODS --- */
@@ -169,8 +190,17 @@ section {
     gap: 3rem;
     margin-bottom: 2rem;
 }
+
 .methods-text {
     flex: 2;
+}
+
+.math-block {
+    text-align: center;
+    font-size: 1.2rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    margin: 0;
 }
 
 /* --- RESULTS --- */
@@ -182,16 +212,16 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 3rem 3rem 2rem; /* Added slight extra padding for rotated labels */
+    padding: 2rem 3rem 3rem 2rem; 
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
-    width: fit-content;    /* Changed from 100% to hug the map */
-    margin: 0 auto;        /* Centers the frame in the section */
+    width: fit-content;    
+    margin: 0 auto;        
     box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     position: relative;
-    overflow-x: auto;      /* Allows scrolling on mobile */
+    overflow-x: auto;      
 }
 
 .figure-caption {
@@ -212,7 +242,6 @@ section {
 
 .matrix-container {
     display: grid;
-    /* Reduced top row from 180px to 110px to eliminate white space */
     grid-template-columns: 160px repeat(8, 55px); 
     grid-template-rows: 110px repeat(8, 55px);    
     gap: 3px;
@@ -225,13 +254,13 @@ section {
     white-space: nowrap;
     justify-content: flex-start;
     align-items: flex-end;
-    margin-left: 27px; /* Re-centered for the new 55px columns */
+    margin-left: 27px; 
     padding-bottom: 5px;
 }
 
 /* Tooltip */
 #tooltip {
-    position: fixed; /* <-- THIS FIXES THE SCROLLING BUG */
+    position: fixed; 
     background: rgba(15, 23, 42, 0.9);
     color: white;
     padding: 8px 12px;
@@ -239,10 +268,11 @@ section {
     font-size: 14px;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.1s; /* Faster transition so it feels snappy */
-    z-index: 9999; /* Ensures it is always on top of everything */
+    transition: opacity 0.1s; 
+    z-index: 9999; 
     white-space: nowrap;
 }
+
 .matrix-cell {
     display: flex;
     align-items: center;
@@ -321,7 +351,10 @@ footer {
         font-size: 11px;
     }
     .matrix-label.top-label {
-        margin-left: 20px; /* Centers the label over 40px column (40 / 2) */
+        margin-left: 20px; 
+    }
+    .analogy-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -355,65 +388,4 @@ footer {
 
 .pca-toggle-btn:hover:not(.active) {
     color: var(--text-color);
-}
-/* --- 3D BRAIN SIDE-BY-SIDE LAYOUT --- */
-.spin-test-card {
-    display: block; 
-    padding: 0;     
-    overflow: hidden; 
-    background: #ffffff;
-}
-
-.spin-animation-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 400px;
-    background: #ffffff;
-    border-bottom: 1px solid #e2e8f0; /* Soft divider above text */
-}
-
-.brain-iframe-wrapper {
-    flex: 1; /* Takes up exactly 50% width */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    padding-top: 1rem;
-}
-
-.brain-title {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-    font-weight: 800;
-}
-
-.brain-iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-    pointer-events: auto; 
-}
-
-/* Mobile Responsiveness: Stacks the brains vertically on small screens */
-@media (max-width: 768px) {
-    .spin-animation-container {
-        flex-direction: column;
-        height: 700px; /* Increases height to fit both stacked brains */
-    }
-    .brain-iframe-wrapper {
-        border-bottom: 1px solid #e2e8f0;
-    }
-}
-
-/* Formats the text below the brains */
-.methods-text-centered {
-    padding: 2.5rem 3rem; 
-    text-align: left;     
-}
-
-.methods-text-centered h3 {
-    margin-top: 0;
-    text-align: center;   
 }

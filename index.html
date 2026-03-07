@@ -10,6 +10,8 @@
     <script src="pca.js" type="module"></script>
     <script src="pca_scatter.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -47,9 +49,12 @@
                 <h3 style="color: var(--structure-color)">The Roads (Structure)</h3>
                 <p>
                     <strong>PC1 Gene Expression, Myelin Ratio, Cortical Thickness, Allometric Scaling.</strong><br>
-                    Just like a city has physical infrastructure, the brain has "roads." 
+                    Just like a city has physical infrastructure, the brain has "roads". 
                     These layers represent the physical anatomy, morphological cables, and structural hierarchies that permit signals to travel.
                 </p>
+                <div class="card-brain-viewer">
+                    <iframe src="brain_structural.html" title="Structural Brain" scrolling="no"></iframe>
+                </div>
             </div>
 
             <div class="analogy-card">
@@ -59,10 +64,13 @@
                     <strong>5-HT1a Receptors, Glucose Metabolism, Functional Gradient, Intersubject Variability.</strong><br>
                     A road can be open, but cars cannot move until the light turns green. This "traffic" represents neurochemical and functional signaling—the dynamic flow of information controlled by metabolic states and neurotransmitter distributions.
                 </p>
+                <div class="card-brain-viewer">
+                    <iframe src="brain_functional.html" title="Functional Brain" scrolling="no"></iframe>
+                </div>
             </div>
         </div>
         <p>
-            Current neuroscience often studies these physical and functional components in isolation. Our project bridges this gap by transforming diverse volumetric and surface brain maps onto a unified cortical grid (fsLR 32k), creating a robust framework to test whether the brain functions as highly integrated multimodal units, or partially segregated structural and chemical systems.
+            Current neuroscience often studies these physical and functional components in isolation, overlooking their critical interactions. Our project bridges this gap by transforming diverse volumetric and surface brain maps onto a unified cortical grid (fsLR 32k), creating a robust framework to test whether the brain functions as highly integrated multimodal units, or partially segregated structural and chemical systems.
         </p>
     </section>
 
@@ -75,27 +83,15 @@
         <p>
             Comparing brain images directly often yields false connections. This is due to <strong>Spatial Autocorrelation</strong>—the phenomenon where neighboring brain regions are inherently more similar to each other than distant regions, violating standard statistical independence assumptions and inflating false positives.
         </p>
-        <div class="methods-container spin-test-card">
-            
-            <div class="spin-animation-container">
-                <div class="brain-iframe-wrapper">
-                    <h4 class="brain-title" style="color: var(--structure-color);">Structural Mode (Roads)</h4>
-                    <iframe src="brain_structural.html" title="Structural Brain" scrolling="no"></iframe>
-                </div>
-                
-                <div class="brain-iframe-wrapper">
-                    <h4 class="brain-title" style="color: var(--chemical-color);">Functional Mode (Traffic)</h4>
-                    <iframe src="brain_functional.html" title="Functional Brain" scrolling="no"></iframe>
-                </div>
-            </div>
-            
-            <div class="methods-text-centered">
+        
+        <div class="methods-container">
+            <div class="methods-text">
                 <h3>The Spatial Spin Test</h3>
                 <p>
-                    To combat spatial autocorrelation, we utilize the <strong>Alexander-Bloch Spin Test</strong>. Instead of destroying the data's inherent spatial structure by randomly shuffling vertices, we project the maps onto a sphere and rotate them relative to one another.
+                    To combat this, we utilize the <strong>Alexander-Bloch Spin Test</strong>. Instead of destroying the data's inherent spatial structure by randomly shuffling vertices, we project the maps onto a sphere and rotate them relative to one another.
                 </p>
-                <p style="margin-bottom: 0;">
-                    This preserves the intrinsic spatial topology of the original data while randomizing the alignment between the two maps. When combined with Max-T permutation correction, this guarantees that observed correlations represent true biological coupling rather than random geometric coincidence.
+                <p>
+                    This preserves the intrinsic spatial topology of the original data while randomizing the alignment between the two maps. When combined with Max-T permutation correction, this guarantees that observed correlations represent true biological coupling rather than random geometric coincidence. 
                 </p>
             </div>
         </div>
@@ -107,7 +103,7 @@
                     Given the high dimensionality of our data (~32,000 vertices per map), standard scatter plots become unreadable. We implemented hexbin density scatter plots to visualize the concentration of data points across map pairs. 
                 </p>
                 <p>
-                    Because interactions in the brain are rarely perfectly linear, we applied rank transformations to the data. This linearization of monotonic relationships allowed us to evaluate spatial associations rigorously using the Spearman rank correlation coefficient (&rho;).
+                    Because interactions in the brain are rarely perfectly linear, we applied rank transformations to the data. This linearization of monotonic relationships allowed us to evaluate spatial associations rigorously using the Spearman rank correlation coefficient (\(\rho\)), converting curved trends into linear diagonal associations.
                 </p>
             </div>
         </div>
@@ -116,7 +112,22 @@
             <div class="methods-text">
                 <h3>Principal Component Analysis (PCA)</h3>
                 <p>
-                    To compress this complex network into digestible organizational axes, we performed PCA via eigendecomposition on our symmetric 8x8 Spearman correlation matrix. This isolates the dominant, orthogonal axes (principal components) that explain the maximum shared spatial variance across all structural and functional modalities.
+                    To characterize the dominant low-dimensional structure underlying the multimodal covariance between brain maps, we performed Principal Component Analysis (PCA) on the multimodal correlation matrix.
+                </p>
+                <p>
+                    Because the \(8\times8\) Spearman correlation matrix \(R\) is symmetric and positive semi-definite by construction, PCA was implemented directly via eigendecomposition:
+                </p>
+                <p class="math-block">
+                    \[ R = V \Lambda V^T \]
+                </p>
+                <p>
+                    Here, \(\Lambda\) contains the eigenvalues (sorted in descending order to calculate variance explained), and \(V\) contains the corresponding orthonormal eigenvectors. Component loadings, which quantify the contribution of each original brain map to each principal component, were computed as:
+                </p>
+                <p class="math-block">
+                    \[ L = V \Lambda^{1/2} \]
+                </p>
+                <p>
+                    This mathematical property allows us to precisely isolate the orthogonal axes capturing the maximum shared spatial variance across structural and functional modalities. 
                 </p>
             </div>
         </div>
@@ -125,7 +136,19 @@
             <div class="methods-text">
                 <h3>Subgroup Clustering</h3>
                 <p>
-                    Finally, we applied agglomerative hierarchical clustering (using average linkage on correlation-derived distances) to systematically test our "Segregation Hypothesis." We cut the resulting dendrogram into two distinct clusters to measure whether maps couple more strongly <b>within</b> their biological domains (e.g., structure-to-structure) than <b>between</b> them.
+                    Finally, we applied agglomerative hierarchical clustering to systematically test our "Segregation Hypothesis". Because clustering algorithms operate on distances rather than similarities, we converted the Spearman correlation matrix \(R\) into a dissimilarity matrix \(D\):
+                </p>
+                <p class="math-block">
+                    \[ D = 1 - R \]
+                </p>
+                <p>
+                    We set the diagonal to zero (\(D_{ii} = 0\)) to enforce zero self-distance. This transformation maps highly positively correlated map pairs to small distances. We then used average linkage (UPGMA), where the distance between two clusters \(A\) and \(B\) is defined as the mean pairwise distance between all elements across clusters:
+                </p>
+                <p class="math-block">
+                    \[ d(A,B) = \frac{1}{|A||B|} \sum_{i \in A} \sum_{j \in B} D_{ij} \]
+                </p>
+                <p>
+                    We cut the resulting dendrogram into two distinct clusters (\(k=2\)) to measure whether maps couple more strongly <b>within</b> their biological domains (e.g., structure-to-structure) than <b>between</b> them.
                 </p>
             </div>
         </div>
@@ -225,7 +248,6 @@
         </div>
     </section>
 
-
     <section id="conclusion" class="impact-section">
         <div class="section-header">
             <span class="section-tag">The Impact</span>
@@ -253,7 +275,5 @@
             Kevin Souder • Kevin Huang
         </p>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
