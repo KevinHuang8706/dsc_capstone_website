@@ -389,3 +389,201 @@ footer {
 .pca-toggle-btn:hover:not(.active) {
     color: var(--text-color);
 }
+
+/* --- COUPLING CASE STUDIES --- */
+.coupling-cases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* Reduced gap between cards */
+    margin-top: 1.5rem;
+}
+
+.coupling-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem; /* Reduced from 2.5rem to remove excess white space */
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+
+.coupling-header {
+    text-align: center;
+    margin-bottom: 0.75rem; /* Pulled the header closer to the stats */
+}
+
+.coupling-header h4 {
+    font-size: 1.35rem;
+    margin: 0 0 0.5rem 0; /* Pulled the title closer to the badges */
+    color: #1e293b;
+    font-weight: 800;
+}
+
+.coupling-header h4 span {
+    color: #94a3b8;
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 0 10px;
+}
+
+.coupling-badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge.structural {
+    background: #eff6ff;
+    color: var(--structure-color);
+    border: 1px solid #bfdbfe;
+}
+
+.badge.functional {
+    background: #fef2f2;
+    color: var(--chemical-color);
+    border: 1px solid #fecaca;
+}
+
+.badge.vs {
+    background: transparent;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+.coupling-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem; /* Brought stats closer together */
+    margin-bottom: 1.25rem; /* Tighter margin above images */
+    padding-bottom: 1rem; /* Tighter padding below badges */
+    border-bottom: 2px dashed #f1f5f9;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-item span {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.stat-item strong {
+    font-size: 1.35rem;
+    color: #1e293b;
+}
+
+.coupling-images {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch; /* FIX: Forces both image boxes to be the exact same height */
+}
+
+.image-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8fafc;
+    border-radius: 0.75rem;
+    padding: 1rem; /* Reduced padding inside the image box */
+    border: 1px solid #e2e8f0;
+}
+
+.image-box img {
+    width: 100%;
+    max-height: 240px; /* Optional: Constrains extremely tall plots */
+    object-fit: contain; /* Prevents aspect ratio distortion */
+    margin: auto 0 1rem 0; /* Auto margin pushes the image vertically if needed */
+    mix-blend-mode: multiply;
+}
+
+.image-box span {
+    font-size: 0.9rem;
+    color: #475569;
+    font-weight: 600;
+    text-align: center;
+    margin-top: auto; /* FIX: This permanently pins the text to the bottom baseline! */
+}
+
+@media (max-width: 768px) {
+    .coupling-images {
+        flex-direction: column;
+    }
+    .coupling-stats {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+}
+/* --- NAV BAR DROPDOWN --- */
+/* --- NAV BAR DROPDOWN --- */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 2rem;
+    padding-bottom: 1rem; /* Creates an invisible bridge so the mouse never loses hover! */
+    margin-bottom: -1rem; /* Offsets the padding so the layout doesn't break */
+}
+
+.nav-dropdown .dropbtn {
+    margin-left: 0; 
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.95);
+    min-width: 220px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    z-index: 1001;
+    top: 100%; /* FIX: Brought this up to 100% so there is no dead zone */
+    left: -10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: #475569;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    margin-left: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8fafc;
+    color: var(--structure-color);
+    padding-left: 20px; /* Slight indent effect on hover */
+}
+
+/* Show the dropdown menu on hover */
+.nav-dropdown:hover .dropdown-content {
+    display: block;
+}

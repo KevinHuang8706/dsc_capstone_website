@@ -21,14 +21,24 @@
             <div class="nav-links">
                 <a href="#intro">The Analogy</a>
                 <a href="#methods">Methods</a>
-                <a href="#results">Results</a>
+                <div class="nav-dropdown">
+                    <a href="#results" class="dropbtn">Results ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#result-1">1. Correlation Matrix</a>
+                        <a href="#result-2">2. Spatial Coupling</a>
+                        <a href="#result-3">3. PCA Axes</a>
+                        <a href="#result-4">4. Subgroup Clustering</a>
+                        <a href="#result-5">5. Vector Alignment</a>
+                    </div>
+                </div>
                 <a href="#conclusion">Impact</a>
+                <a href="assets/report.pdf" target="_blank" class="nav-report-btn">Full Report</a>
             </div>
         </div>
     </nav>
 
     <header>
-        <h1 class="hero-title">The Brain:<br>Roads vs. Traffic</h1>
+        <h1 class="hero-title">Structural vs. Chemical: Discovering Brain Map Coupling</h1>
         <p class="hero-subtitle">
             Do the physical structures of the brain strictly dictate its functional activity? <br>
             Or do they operate as partially independent systems?
@@ -160,7 +170,7 @@
             <h2>Mapping the Covariance Structure</h2>
         </div>
 
-        <div class="result-block">
+        <div id="result-1" class="result-block">
             <h3>1. The Multimodal Correlation Matrix</h3>
             <p>
                 Below is the comprehensive correlation matrix for our 8 neuroimaging maps. Values range from -1 (Dark Blue, strong negative coupling) to +1 (Dark Red, strong positive coupling). 
@@ -177,14 +187,99 @@
             <p class="figure-caption">Figure 1: Interactive 8x8 Spearman Correlation Matrix. Darker colors indicate stronger biological signals that survived Max-T correction thresholds.</p>
         </div>
 
-        <div class="result-block">
-            <h3>2. Localized Spatial Coupling</h3>
+        <div id="result-2" class="result-block">
+            <h3>2. Localized Spatial Coupling Case Studies</h3>
             <p>
                 Our pairwise density scatter plots revealed that structural and chemical modalities are not uniformly linked across the brain. They frequently exhibit complex "hockey stick" or sigmoidal curves. When plotting local coupling scores onto the cortical surface, we observe that structural and functional layers are tightly coupled in primary sensory and motor regions, but highly uncoupled (divergent) in the association cortex.
             </p>
+            <p>
+                Below are three key examples illustrating the strength of within-group tethering and between-group decoupling:
+            </p>
+
+            <div class="coupling-cases-container">
+                
+                <div class="coupling-card">
+                    <div class="coupling-header">
+                        <h4>PC1 Gene Expression <span>vs</span> T1w/T2w Ratio (Myelin)</h4>
+                        <div class="coupling-badges">
+                            <span class="badge structural">🛣️ Structural</span>
+                            <span class="badge vs">vs</span>
+                            <span class="badge structural">🛣️ Structural</span>
+                        </div>
+                    </div>
+                    <div class="coupling-stats">
+                        <div class="stat-item"><span>Spearman (ρ)</span><strong>0.840</strong></div>
+                        <div class="stat-item"><span>P-Value (Spin)</span><strong>< 0.001</strong></div>
+                        <div class="stat-item"><span>Relationship</span><strong>Tightly Tethered</strong></div>
+                    </div>
+                    <div class="coupling-images">
+                        <div class="image-box">
+                            <img src="assets/scatter_pc1_myelin.png" alt="Ranked Scatter Plot">
+                            <span>Ranked Pairwise Scatter Plot</span>
+                        </div>
+                        <div class="image-box">
+                            <img src="assets/coupling_pc1_myelin.png" alt="Coupling Brain Map">
+                            <span>Localized Coupling Brain Map</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coupling-card">
+                    <div class="coupling-header">
+                        <h4>5-HT1a Receptor <span>vs</span> Functional Gradient</h4>
+                        <div class="coupling-badges">
+                            <span class="badge functional">🚦 Functional</span>
+                            <span class="badge vs">vs</span>
+                            <span class="badge functional">🚦 Functional</span>
+                        </div>
+                    </div>
+                    <div class="coupling-stats">
+                        <div class="stat-item"><span>Spearman (ρ)</span><strong>0.507</strong></div>
+                        <div class="stat-item"><span>P-Value (Spin)</span><strong>< 0.001</strong></div>
+                        <div class="stat-item"><span>Relationship</span><strong>Tightly Tethered</strong></div>
+                    </div>
+                    <div class="coupling-images">
+                        <div class="image-box">
+                            <img src="assets/scatter_5ht1a_func.png" alt="Ranked Scatter Plot">
+                            <span>Ranked Pairwise Scatter Plot</span>
+                        </div>
+                        <div class="image-box">
+                            <img src="assets/coupling_5ht1a_func.png" alt="Coupling Brain Map">
+                            <span>Localized Coupling Brain Map</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coupling-card">
+                    <div class="coupling-header">
+                        <h4>Allometric Scaling (NIH) <span>vs</span> Glucose Metabolism</h4>
+                        <div class="coupling-badges">
+                            <span class="badge structural">🛣️ Structural</span>
+                            <span class="badge vs">vs</span>
+                            <span class="badge functional">🚦 Functional</span>
+                        </div>
+                    </div>
+                    <div class="coupling-stats">
+                        <div class="stat-item"><span>Spearman (ρ)</span><strong>0.025</strong></div>
+                        <div class="stat-item"><span>P-Value (Spin)</span><strong>0.914</strong></div>
+                        <div class="stat-item"><span>Relationship</span><strong>Independent / Decoupled</strong></div>
+                    </div>
+                    <div class="coupling-images">
+                        <div class="image-box">
+                            <img src="assets/scatter_scaling_glucose.png" alt="Ranked Scatter Plot">
+                            <span>Ranked Pairwise Scatter Plot</span>
+                        </div>
+                        <div class="image-box">
+                            <img src="assets/coupling_scaling_glucose.png" alt="Coupling Brain Map">
+                            <span>Localized Coupling Brain Map</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="result-block">
+        <div id="result-3" class="result-block">
             <h3>3. Dominant Axes of Organization (PCA)</h3>
             <p>
                 Our PCA revealed a highly compressed low-dimensional structure. <strong>PC1</strong> explains 50.10% of the variance and acts as a global "coupling axis" capturing shared variation across all maps. <strong>PC2</strong> explains 18.08% of the variance and functions strictly as a "segregation axis"—pulling structural maps (like cortical thickness) to one side, and functional/chemical maps (like 5-HT1a) to the other. Together, just two dimensions explain ~70% of the brain's macroscopic covariance.
@@ -203,7 +298,7 @@
             </div>
             <p class="figure-caption">Figure 3: Interactive PCA visualizations. Use the toggle bar to switch between the Loadings Heatmap and Variance Scree Plot.</p>
         </div>
-        <div class="result-block">
+        <div id="result-4" class="result-block">
             <h3>4. Subgroup Connectivity Analysis</h3>
             <p>
                 Hierarchical clustering perfectly partitioned the maps into two biological families: an "Inward-oriented" Structural cluster and an "Outward-oriented" Functional cluster. The mean correlation strength <em>within</em> these groups (<strong><span style="text-decoration: overline;">r</span> &approx; 0.497</strong> and <strong>0.378</strong>) was significantly higher than the correlation <em>between</em> the groups (<strong><span style="text-decoration: overline;">r</span> = -0.370</strong>), providing stark quantitative evidence for structural-functional decoupling.
@@ -215,7 +310,7 @@
                 <p class="figure-caption">Figure 4: Interactive Hierarchical Dendrogram. Hover over nodes and leaves to view cluster assignments and biological coupling notes.</p>
             </div>
         </div>
-        <div class="result-block">
+        <div id="result-5" class="result-block">
             <h3>5. PCA Vector Alignment</h3>
             <p>
                 The scatter plot below visualizes the exact PC1 and PC2 loadings for each brain map. 
@@ -269,7 +364,7 @@
         <p><strong>DSC 180 Capstone Project</strong> | UC San Diego</p>
         <p class="footer-links">
             <a href="https://github.com/kesouder/BrainMap_Analysis" target="_blank">GitHub Repository</a>
-            <a href="https://kesouder.github.io/BrainMap_Analysis/" target="_blank">Full Report Site</a>
+            <a href="assets/report.pdf" target="_blank">Full Report</a>
         </p>
         <p class="footer-authors">
             Kevin Souder • Kevin Huang
